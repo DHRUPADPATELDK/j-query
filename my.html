@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>exercice</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="my.css">
+
+</head>
+
+<body>
+    <div class="cont">
+        <h3>Create Order:</h3>
+        <input type="button" class="btn" value="Add Item" name="btnright">
+    </div>
+
+    <div class="form">
+
+
+        <form>
+            <div class="orderItems">
+                <div class="orderItem">
+                    <input type="text" placeholder=" Enter the name" name="name" class="itemname">
+                    <input type="text" placeholder=" Enter the qty" name="qty" class="itemqty">
+                    <input type="text" placeholder="Enter the Price" name="price" class="itemprice">
+                </div>
+            </div>
+
+
+
+            <div>
+                <h3>Personal Info:</h3>
+                <input type="text" placeholder="id" name="id">
+                <input type="text" placeholder="firstname" name="fname">
+                <input type="text" placeholder="lastname" name="lastname">
+                <input type="text" placeholder="email" name="email">
+                <input type="text" placeholder="phone" name="phonenum">
+            </div>
+
+
+
+             <div>
+                <h3>Address:</h3>
+                <input type="text" placeholder="house" name="house">
+                <input type="text" placeholder="city" name="city">
+                <input type="text" placeholder="state" name="state">
+                <input type="text" placeholder="country" name="country">
+                <input type="text" placeholder="zipcode" name="zipcode">
+            </div>
+
+
+
+            <div>
+                <input type="button" class="btnorder" id="add" value="Add Order">
+            </div>
+
+        </form>
+    </div>
+
+    <table id="table" class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>username</th>
+                <th>email</th>
+                <th>item</th>
+                <th>totalPrice</th>
+                <th>Delete</th>
+                    
+                  
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+            </tr>
+        </tbody>
+    </table>
+
+    
+   
+    <script>
+
+        $(document).ready(function () {
+            var orders = []
+            var wrapper = $(".orderItems");
+            var add_button = $(".btn");
+            var x = 1;
+            $(add_button).click(function (e) {
+                e.preventDefault();
+                if (x) {
+                    $(wrapper).append('<div class="orderItem"><input type="text"placeholder="Enter the name"name="name" class="itemname"/>  <input type="text"placeholder="Enter the qty"name="qty" class="itemqty"/>  <input type="text"placeholder="Enter the price"name="price" class="itemprice"/><button class="remove_field">Remove</button></div>'); //add input box
+                    x++;
+                }
+            });
+            $(wrapper).on("click", ".remove_field", function (e) {
+                e.preventDefault();
+                $(this).parent('div').remove();
+                x--;
+            })
+
+
+            // add data table
+
+            $('#add').click(function () {
+
+                var _items = $('.orderItem');
+                var _id = $('input[name="id"]').val();
+                var _uname = $('input[name="fname"]').val();
+                var _mail = $('input[name="email"]').val();
+                var _last = $('input[name="lastname"]').val();
+                var _orderItems = [];
+                var _totalQty = 0;
+                var _totalPrice = 0;
+
+
+                $(_items).each((index) => {
+                    _orderItems.push({
+                        name: $(_items[index]).find('.itemname').val(),
+                        qty: $(_items[index]).find('.itemqty').val(),
+                        price: $(_items[index]).find('.itemprice').val(),
+                    });
+                    _totalQty = _totalQty + parseFloat(_orderItems[index].qty);
+                    _totalPrice = _totalPrice + parseFloat(_orderItems[index].price);
+                })
+
+
+                orders.push({ "id": _id, "username": _uname + _last, "email": _mail, items: _orderItems });
+
+                var _tr = '<tr><td>' + _id + '</td>    <td>' + _uname + _last + '</td>    <td>' + _mail + '</td>      <td>' + _totalQty + '</td>      <td>' + _totalPrice + '</td>       <td class="btn_row_delete">Delete</td>  </tr>';
+                $('tbody').append(_tr);
+
+            });
+        });
+
+       //delete
+       
+        $(document).ready(function($){ 
+        $(document).on('click',".btn_row_delete", function(e){
+        var r = $(this).closest('tr').remove();
+        });
+        });
+     
+
+
+
+
+
+     
+    </script>
+
+</body>
+
+</html>
